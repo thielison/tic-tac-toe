@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* font-family: var(--body-font); */
+    line-height: 1.5;
+    display: flex;
+
+    /* change it later? */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.board-container {
+    display: grid;
+    grid-template-rows: 200px 200px 200px;
+    grid-template-columns: 200px 200px 200px;
+}
+
+.board-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(246, 246, 246);
+    border: 1px solid black;
+}
