@@ -29,3 +29,24 @@ const gameBoard = (function () {
 
     return { getBoard, dropToken, printGameBoard };
 })();
+
+// Controls the flow and state of the game's turns,
+// as well as whether anybody has won the game
+const gameController = ((playerOneName = "Player One", playerTwoName = "Player Two") => {
+    const players = [
+        { name: playerOneName, token: "X" },
+        { name: playerTwoName, token: "O" },
+    ];
+
+    let activePlayer = players[0];
+
+    const getActivePlayer = () => activePlayer;
+
+    // PRINT NEW ROUND ("PLAYER X TURN) VAI AQUI
+
+    const switchPlayerTurn = () => {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+
+    return { getActivePlayer, switchPlayerTurn };
+})();
