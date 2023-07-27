@@ -50,3 +50,25 @@ const gameController = ((playerOneName = "Player One", playerTwoName = "Player T
 
     return { getActivePlayer, switchPlayerTurn };
 })();
+
+function clickHandlerBoard(e) {
+    const activePlayer = gameController.getActivePlayer();
+    const board = gameBoard.getBoard();
+    const selectedColumn = e.target.dataset.column;
+
+    if (!selectedColumn) return; // Make sure I've clicked a cell and not the gaps in between
+
+    if (board[selectedColumn] !== "") return; // Prevents switching players if I click on a cell that already have a mark
+
+    gameBoard.dropToken(selectedColumn, activePlayer.token);
+
+    const updateScreen = () => {
+        boardDiv.textContent = ""; // Clear the board container
+        gameBoard.printGameBoard(); // Get the updated array containing the newest version of the board
+    };
+
+    updateScreen();
+    gameController.switchPlayerTurn();
+}
+
+boardDiv.addEventListener("click", clickHandlerBoard);
