@@ -1,5 +1,4 @@
 "use strict";
-
 const boardDiv = document.querySelector(".board-container");
 
 // Create game board
@@ -51,24 +50,32 @@ const gameController = ((playerOneName = "Player One", playerTwoName = "Player T
     return { getActivePlayer, switchPlayerTurn };
 })();
 
-function clickHandlerBoard(e) {
-    const activePlayer = gameController.getActivePlayer();
+const screenController = (function () {
     const board = gameBoard.getBoard();
-    const selectedColumn = e.target.dataset.column;
 
-    if (!selectedColumn) return; // Make sure I've clicked a cell and not the gaps in between
+    function clickHandlerBoard(e) {
+        const activePlayer = gameController.getActivePlayer();
 
-    if (board[selectedColumn] !== "") return; // Prevents switching players if I click on a cell that already have a mark
+        const selectedColumn = e.target.dataset.column;
 
-    gameBoard.dropToken(selectedColumn, activePlayer.token);
+        // Make sure I've clicked a cell and not the gaps in between
+        if (!selectedColumn) return;
 
-    const updateScreen = () => {
-        boardDiv.textContent = ""; // Clear the board container
-        gameBoard.printGameBoard(); // Get the updated array containing the newest version of the board
-    };
+        // Prevents switching players if I click on a cell that already have a mark
+        if (board[selectedColumn] !== "") return;
 
-    updateScreen();
-    gameController.switchPlayerTurn();
-}
+        gameBoard.dropToken(selectedColumn, activePlayer.token);
 
-boardDiv.addEventListener("click", clickHandlerBoard);
+        const updateScreen = () => {
+            // Clear the board container
+            boardDiv.textContent = "";
+            // Get the updated array containing the newest version of the board
+            gameBoard.printGameBoard();
+        };
+
+        updateScreen();
+        gameController.switchPlayerTurn();
+    }
+
+    boardDiv.addEventListener("click", clickHandlerBoard);
+})();
