@@ -45,13 +45,6 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
-    /*  This is where we would check for a winner and handle that logic,
-        such as a win message. */
-    // Create win conditions in the console version, and create a way to check if a win condition was met after each round.
-    // acho que vai ter que pegar o board e verificar todo ele com o forEach a cada token adicionado.
-    // verificar se houve win se preencher algum dos winning combos ou se é um tie com todos preenchidos...
-    // lembrando que com todos preenchidos, na última preenchida, pode haver um jogador vencedor
-
     return { getActivePlayer, switchPlayerTurn };
 })();
 
@@ -70,20 +63,20 @@ const screenController = (function () {
         // Prevents switching players if I click on a cell that already have a mark
         if (board[selectedColumn] !== "") return;
 
-        // Update player's turn on each click
-        playerTurn.textContent = `${activePlayer.name}'s turn...`;
-
         // Drop a player's X/O token on the board
         gameBoard.dropToken(selectedColumn, activePlayer.token);
 
-        // Clear the board container and print the newest version of the board
         const updateScreen = () => {
+            // Clear the board container
             boardDiv.textContent = "";
+            // Print the newest version of the board
             gameBoard.printGameBoard();
+            // Update player's turn on each click
+            playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
         };
 
-        updateScreen();
         gameController.switchPlayerTurn();
+        updateScreen();
     }
 
     boardDiv.addEventListener("click", clickHandlerBoard);
