@@ -64,23 +64,25 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
                 [2, 4, 6],
             ];
 
-            // Check if the player has any of the winning combinations
+            // Check if a specific mark has any of the winning combinations
             return winningCombinations.some((combination) => combination.every((index) => board[index] === mark));
         };
 
         // Define a function to display the winner
-        const displayWinner = (player) => `Player ${player} is the winner!`;
+        const displayWinnerMessage = (player) => {
+            document.querySelector(".turn").textContent = `Player ${player} is the winner!`;
+        };
 
         // Check if either player has won or if it's a tie
         switch (true) {
             case checkWinner("X"):
-                console.log(displayWinner("X"));
+                displayWinnerMessage("X");
                 break;
             case checkWinner("O"):
-                console.log(displayWinner("O"));
+                displayWinnerMessage("O");
                 break;
             case board.every((item) => item !== ""):
-                console.log("It's a tie");
+                document.querySelector(".turn").textContent = "It is a tie!";
         }
     };
 
