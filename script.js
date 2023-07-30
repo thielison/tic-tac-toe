@@ -45,7 +45,46 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
-    return { getActivePlayer, switchPlayerTurn };
+    // Handle the logic that checks for a winner or a tie and display the message
+    const isThereAWinner = () => {
+        // Get the current state of the game board
+        const board = gameBoard.getBoard();
+
+        // Define a function to check if a player has won
+        const checkWinner = (mark) => {
+            // Define all possible winning combinations
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            // Check if the player has any of the winning combinations
+            return winningCombinations.some((combination) => combination.every((index) => board[index] === mark));
+        };
+
+        // Define a function to display the winner
+        const displayWinner = (player) => `Player ${player} is the winner!`;
+
+        // Check if either player has won or if it's a tie
+        switch (true) {
+            case checkWinner("X"):
+                console.log(displayWinner("X"));
+                break;
+            case checkWinner("O"):
+                console.log(displayWinner("O"));
+                break;
+            case board.every((item) => item !== ""):
+                console.log("It's a tie");
+        }
+    };
+
+    return { getActivePlayer, switchPlayerTurn, isThereAWinner };
 })();
 
 const screenController = (function () {
@@ -77,6 +116,7 @@ const screenController = (function () {
 
         gameController.switchPlayerTurn();
         updateScreen();
+        gameController.isThereAWinner(); // Check if it is a winner on each turn
     }
 
     boardDiv.addEventListener("click", clickHandlerBoard);
