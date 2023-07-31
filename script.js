@@ -77,12 +77,13 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
         switch (true) {
             case checkWinner("X"):
                 displayWinnerMessage("X");
-                break;
+                return true;
             case checkWinner("O"):
                 displayWinnerMessage("O");
-                break;
+                return true;
             case board.every((item) => item !== ""):
                 document.querySelector(".turn").textContent = "It is a tie!";
+                return true;
         }
     };
 
@@ -118,7 +119,13 @@ const screenController = (function () {
 
         gameController.switchPlayerTurn();
         updateScreen();
-        gameController.isThereAWinner(); // Check if it is a winner on each turn
+
+        // Check if there is a winner
+        // Case isThereAWinner() returns true, the game is over and the "click"
+        // eventListener is removed, preventing interaction with the board
+        if (gameController.isThereAWinner()) {
+            boardDiv.removeEventListener("click", clickHandlerBoard);
+        }
     }
 
     boardDiv.addEventListener("click", clickHandlerBoard);
