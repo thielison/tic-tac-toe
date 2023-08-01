@@ -70,7 +70,7 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
 
         // Define a function to display the winner
         const displayWinnerMessage = (player) => {
-            document.querySelector(".turn").textContent = `Player ${player} is the winner!`;
+            document.querySelector(".turn").textContent = `Player ${player} wins!`;
         };
 
         // Check if either player has won or if it's a tie
@@ -82,7 +82,7 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
                 displayWinnerMessage("O");
                 return true;
             case board.every((item) => item !== ""):
-                document.querySelector(".turn").textContent = "It is a tie!";
+                document.querySelector(".turn").textContent = "It's a draw!";
                 return true;
         }
     };
@@ -93,8 +93,9 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
 const screenController = (function () {
     const board = gameBoard.getBoard();
     const playerTurn = document.querySelector(".turn");
-    playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
+    const playRestartButton = document.getElementById("play-restart-button");
 
+    // Function to handle clicks on the game board
     function clickHandlerBoard(e) {
         const activePlayer = gameController.getActivePlayer();
         const selectedColumn = e.target.dataset.column;
@@ -108,25 +109,47 @@ const screenController = (function () {
         // Drop a player's X/O token on the board
         gameBoard.dropToken(selectedColumn, activePlayer.token);
 
-        const updateScreen = () => {
-            // Clear the board container
-            boardDiv.textContent = "";
-            // Print the newest version of the board
-            gameBoard.printGameBoard();
-            // Update player's turn on each click
-            playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
-        };
-
+        // Switch to the other player's turn
         gameController.switchPlayerTurn();
+
+        // Update the screen to reflect the new game state
         updateScreen();
 
         // Check if there is a winner
-        // Case isThereAWinner() returns true, the game is over and the "click"
-        // eventListener is removed, preventing interaction with the board
+        // In case isThereAWinner() returns true, the game is over and the "click"
+        // EventListener is removed, preventing interaction with the board
         if (gameController.isThereAWinner()) {
             boardDiv.removeEventListener("click", clickHandlerBoard);
         }
     }
 
-    boardDiv.addEventListener("click", clickHandlerBoard);
+    // Function to update the screen to reflect the current game state
+    const updateScreen = () => {
+        // Clear the board container
+        boardDiv.textContent = "";
+        // Print the newest version of the board
+        gameBoard.printGameBoard();
+        // Update player's turn on each click
+        playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
+    };
+
+    // Function to reset the game state when the "Restart" button is clicked
+    const resetGame = () => {
+        if (playRestartButton.textContent === "Restart") {
+            // Clear all cells on the board container
+            boardDiv.childNodes.forEach((square) => {
+                square.textContent = "";
+            });
+
+            // Clear the board array
+            board.fill("");
+        }
+    };
+
+    playRestartButton.addEventListener("click", () => {
+        resetGame();
+        playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
+        boardDiv.addEventListener("click", clickHandlerBoard);
+        playRestartButton.textContent = "Restart";
+    });
 })();
