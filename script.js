@@ -131,11 +131,20 @@ const screenController = (function () {
         gameBoard.printGameBoard();
         // Update player's turn on each click
         playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
+
+        // Give a specific color to each mark
+        boardDiv.childNodes.forEach((item) => {
+            if (item.textContent === "X") {
+                item.classList.add("x-mark");
+            } else {
+                item.classList.add("o-mark");
+            }
+        });
     };
 
     // Function to reset the game state when the "Restart" button is clicked
     const resetGame = () => {
-        if (playRestartButton.textContent === "Restart") {
+        if (playRestartButton.textContent === "RESTART") {
             // Clear all cells on the board container
             boardDiv.childNodes.forEach((square) => {
                 square.textContent = "";
@@ -150,6 +159,6 @@ const screenController = (function () {
         resetGame();
         playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
         boardDiv.addEventListener("click", clickHandlerBoard);
-        playRestartButton.textContent = "Restart";
+        playRestartButton.textContent = "RESTART";
     });
 })();
