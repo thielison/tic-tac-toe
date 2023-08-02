@@ -1,8 +1,9 @@
 :root {
     --main-font: 'Outfit', sans-serif;
-    --main-color-bg: #fbfbfb;
+    --main-color-bg: #f8f9fa;
     --color-primary: #F3AA60;
     --color-secondary: #468B97;
+    --main-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.100);
 }
 
 * {
@@ -31,9 +32,16 @@ body {
     font-weight: 900;    
     color: var(--color-primary);
     text-shadow: 8px 3px 0px var(--color-secondary);
+    animation-name: falling;
+    animation-duration: 1s;
 }
 
-/* Turn, board and button */
+@keyframes falling {
+    from { transform: translateY(-200px); }
+    to { transform: translateY(0); }
+}
+
+/* Main-content container */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -41,22 +49,44 @@ body {
     gap: 3rem;
 }
 
+/* Turn and play/restart button */
 .main-content .turn {
+    color: #495057;
     font-size: 2.5rem;
     height: 2.5rem;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .main-content #play-restart-button {
-    font-size: 1rem;
+    color: var(--main-color-bg);
+    background-color: var(--color-primary);
+    font-size: 1.5rem;
     font-weight: 700;
     width: 280px;
     height: 50px;    
     border: none;
     border-radius: 0.7rem;
-    background-color: var(--color-primary);
-    color: var(--main-color-bg);
+    box-shadow: var(--main-box-shadow);
+    transition: 0.5s;
 }
+
+.main-content #play-restart-button:hover {
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+    background-color: var(--color-secondary);
+}
+
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 
 /* Board */
 .main-content .board-container {
@@ -74,12 +104,18 @@ body {
     justify-content: center;
     background-color: #ffffff;
     border: none;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.105);
+    box-shadow: var(--main-box-shadow);
     border-radius: 0.7rem;
+    transition: 0.3s;   
+}
+
+.board-container > div:hover {
+    cursor: pointer;
+    background-color: #edeeef;
 }
 
 .x-mark {
-    color:var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 .o-mark {
@@ -88,6 +124,7 @@ body {
 
 /* Footer */
 .footer {
+    color: #495057;
     font-size: 1.2rem;
     font-weight: 400;
     display: flex;
