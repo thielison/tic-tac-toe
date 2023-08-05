@@ -8,11 +8,11 @@ const gameBoard = (function () {
 
     const getBoard = () => board;
 
-    const dropToken = (column, player) => {
+    const dropToken = (column, playerToken) => {
         if (board[column] !== "") {
             return;
         }
-        board[column] = player;
+        board[column] = playerToken;
     };
 
     const printGameBoard = () => {
@@ -25,9 +25,21 @@ const gameBoard = (function () {
         });
     };
 
+    // Resets the board and the array to its initial state, only when the "RESTART" button is clicked state
+    const resetGameBoard = () => {
+        if (document.querySelector("#play-restart-button").textContent === "RESTART") {
+            boardDiv.childNodes.forEach((cell) => {
+                cell.textContent = "";
+                cell.classList.remove("winning-cell");
+            });
+
+            board.fill("");
+        }
+    };
+
     printGameBoard();
 
-    return { getBoard, dropToken, printGameBoard };
+    return { getBoard, dropToken, printGameBoard, resetGameBoard };
 })();
 
 // Controls the flow and state of the game's turns,
@@ -158,22 +170,8 @@ const screenController = (function () {
         });
     };
 
-    // Function to reset the game state when the "Restart" button is clicked
-    const resetGame = () => {
-        if (playRestartButton.textContent === "RESTART") {
-            // Clear all cells on the board container
-            boardDiv.childNodes.forEach((cell) => {
-                cell.textContent = "";
-                cell.classList.remove("winning-cell");
-            });
-
-            // Clear the board array
-            board.fill("");
-        }
-    };
-
     playRestartButton.addEventListener("click", () => {
-        resetGame();
+        gameBoard.resetGameBoard();
         playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
         boardDiv.addEventListener("click", clickHandlerBoard);
         playRestartButton.textContent = "RESTART";
