@@ -30,7 +30,7 @@ const gameBoard = (function () {
         if (document.querySelector("#play-restart-button").textContent === "RESTART") {
             boardDiv.childNodes.forEach((cell) => {
                 cell.textContent = "";
-                cell.classList.remove("winning-cell");
+                cell.classList.remove("winning-cell", "o-mark", "x-mark");
             });
 
             board.fill("");
@@ -161,11 +161,11 @@ const screenController = (function () {
         playerTurn.textContent = `${gameController.getActivePlayer().name}'s turn...`;
 
         // Give a specific color to each mark
-        boardDiv.childNodes.forEach((item) => {
-            if (item.textContent === "X") {
-                item.classList.add("x-mark");
-            } else {
-                item.classList.add("o-mark");
+        boardDiv.childNodes.forEach((cell) => {
+            if (cell.textContent === "X") {
+                cell.classList.add("x-mark");
+            } else if (cell.textContent === "O") {
+                cell.classList.add("o-mark");
             }
         });
     };
