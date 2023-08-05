@@ -58,15 +58,30 @@ const gameController = ((playerOneName = "Player X", playerTwoName = "Player O")
         [2, 4, 6],
     ];
 
-    // Handle the logic that checks for a winner or a tie and display the message
+    // Handle the logic that checks for a winner or a tie
     const isThereAWinner = () => {
         // Get the current state of the game board
         const board = gameBoard.getBoard();
 
-        // Define a function to check if a player has won
+        // This function checks if either X/O marks has any of the winning combinations on the board
         const checkWinner = (mark) => {
-            // Check if a specific mark has any of the winning combinations
-            return winningCombinations.some((combination) => combination.every((index) => board[index] === mark));
+            // Initialize a variable to keep track of whether there is a winning combination
+            let winCombination = false;
+
+            // Iterate over each combination in the winningCombinations array
+            winningCombinations.forEach((combination) => {
+                // Check if all positions in the combination are filled with the same mark
+                const allPositionsMatch = combination.every((index) => board[index] === mark);
+                // If all positions match, then there is a winning combination
+                if (allPositionsMatch) {
+                    winCombination = true;
+                    // Add the "winning-cell" css class to the cells in the winning combination
+                    combination.forEach((index) => boardDiv.childNodes[index].classList.add("winning-cell"));
+                }
+            });
+
+            // Return true or false (whether there is a winning combination or not)
+            return winCombination;
         };
 
         // Define a function to display the winner
@@ -147,8 +162,9 @@ const screenController = (function () {
     const resetGame = () => {
         if (playRestartButton.textContent === "RESTART") {
             // Clear all cells on the board container
-            boardDiv.childNodes.forEach((square) => {
-                square.textContent = "";
+            boardDiv.childNodes.forEach((cell) => {
+                cell.textContent = "";
+                cell.classList.remove("winning-cell");
             });
 
             // Clear the board array

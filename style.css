@@ -122,6 +122,11 @@ body {
     color: var(--color-primary);
 }
 
+/* When there's a winner, color the winning combination */
+.board-container > .winning-cell {
+    background-color: #28a9ba30;
+}
+
 /* Footer */
 .footer {
     color: #495057;
